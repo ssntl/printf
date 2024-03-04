@@ -1,0 +1,84 @@
+notes:
+
+variadic functions: iterate at every % unless %%
+
+va_start(ap, param) = initialize va_list object
+va_end(ap) = basically free
+va_arg(ap, type) = take next arg
+
+ap = argument pointer // va_list is already cast as pointer so no need to pointer arg
+gcc -H  shows path to lib header file
+
+return value is int to check for success. (negative number returnes is error)
+int main()
+{
+    int result = printf("Sentence to know how many %s\n", "characters were written");
+    printf("%d characters were written", result);
+}
+
+REQUIREMENTS:
+
+conversions:
+
+cspdiuxX%
+
+FORMAT SPECIFIERS
+
+%c single char
+%s string
+%p void * in hexa (address of a pointer or any other var.)
+%d decimal
+%i int base 10
+%u unsigned decimal
+%x hexa in lowercase
+%X hexa in Uppercase
+%% percent sign
+
+
+Bonus list:
+•Manage any combination of the following flags: ’-0.’ and the field minimum width
+under all conversions.
+•Manage all the following flags: ’# +’ (Yes, one of them is a space)
+
+
+LEARN
+type promotion: https://youtu.be/byRw36Y3Hjs?si=I7XZ38--4ORtjVOF&t=1279
+when i pass a char it gets promoted to int if float then double
+
+
+RECURSION
+#include <unistd.h>
+#include <stdio.h>
+
+int print_char(char c) {
+    return write(1, &c, 1);
+}
+
+int print_digit(long n, int base) {
+    int count;
+    char *symbols;
+
+    symbols = "0123456789abcdef";
+    if (n < 0) {
+        write(1, "-", 1);
+        return print_digit(-n, base) +1; //+1 to increase count to count negative number
+    } else if (n < base) {
+        return print_char(symbols[n]);
+    } else {
+        count = print_digit(n / base, base);
+        return count + print_digit(n % base, base);
+    }
+}
+
+int main() {
+    print_digit(-421, 10);
+    return 0;
+}
+
+
+REALTODO
+
+- libft from intra
+- triple check makefile
+- putstr and putnbr from libft instead of printf
+- make sure to have errorchecking in libft functions from above
